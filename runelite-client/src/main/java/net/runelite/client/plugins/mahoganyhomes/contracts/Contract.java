@@ -24,60 +24,27 @@
  */
 package net.runelite.client.plugins.mahoganyhomes.contracts;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import lombok.Getter;
-import net.runelite.api.TileObject;
-import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.mahoganyhomes.MahoganyHomesWorldOverlay.CLICKBOX_BORDER_COLOR;
-import static net.runelite.client.plugins.mahoganyhomes.MahoganyHomesWorldOverlay.CLICKBOX_FILL_COLOR;
-import static net.runelite.client.plugins.mahoganyhomes.MahoganyHomesWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
-import static net.runelite.client.plugins.mahoganyhomes.MahoganyHomesWorldOverlay.IMAGE_Z_OFFSET;
-import net.runelite.client.plugins.mahoganyhomes.MahoganyHomesPlugin;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Getter
 public class Contract
 {
-	private final int objectId;
-	private final WorldPoint location;
+	private final NpcID npc;
 
-	public Contract(int objectId, WorldPoint location)
+	public enum Region
 	{
-		this.objectId = objectId;
-		this.location = location;
+		ARDOUGNE, FALADOR, HOSIDIUS, VARROCK
 	}
 
-	public void makeWorldOverlayHint(Graphics2D graphics, MahoganyHomesPlugin plugin)
+	private final Region region;
+	private final WorldPoint location;
+
+	public Contract(NpcID npc, Region region, WorldPoint location)
 	{
-		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
-
-		if (localLocation == null)
-		{
-			return;
-		}
-
-		// Mark game object
-		if (objectId != -1)
-		{
-			net.runelite.api.Point mousePosition = plugin.getClient().getMouseCanvasPosition();
-
-			if (plugin.getObjectsToMark() != null)
-			{
-				for (TileObject gameObject : plugin.getObjectsToMark())
-				{
-					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
-						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
-
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getConstructionImage(), IMAGE_Z_OFFSET);
-				}
-			}
-		}
-		// Mark tile
-		else
-		{
-			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getConstructionImage(), Color.ORANGE);
-		}
+		this.npc = npc;
+		this.region = region;
+		this.location = location;
 	}
 }

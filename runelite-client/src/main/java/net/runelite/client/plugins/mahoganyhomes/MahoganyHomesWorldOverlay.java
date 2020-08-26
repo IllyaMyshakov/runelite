@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -53,12 +54,13 @@ public class MahoganyHomesWorldOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		String contract = plugin.getContract();
+		Contract contract = plugin.getContract();
 
 		if (contract != null)
 		{
 
 		}
+
 		return null;
 	}
 }

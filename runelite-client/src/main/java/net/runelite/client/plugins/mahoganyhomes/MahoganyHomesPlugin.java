@@ -30,11 +30,15 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.mahoganyhomes.contracts.ArdougneContract;
+import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -49,7 +53,10 @@ public class MahoganyHomesPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MahoganyHomesOverlay overlay;
+	private MahoganyHomesOverlay mahoganyHomesOverlay;
+
+	@Inject
+	private MahoganyHomesWorldOverlay mahoganyHomesWorldOverlay;
 
 	private SkillIconManager skillIconManager;
 
@@ -59,22 +66,23 @@ public class MahoganyHomesPlugin extends Plugin
 	@Inject
 	@Getter
 	private Client client;
-//	static final Set<Integer> FURNITURE_IDS = ImmutableSet.of(
-//		NULL_40156
-//	);
 
+	private Contract currentContract = null;
 	private BufferedImage mapArrow;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(mahoganyHomesOverlay);
+		overlayManager.add(mahoganyHomesWorldOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(mahoganyHomesOverlay);
+		overlayManager.remove(mahoganyHomesWorldOverlay);
+		currentContract = null;
 	}
 
 	public BufferedImage getMapArrow()
@@ -94,8 +102,8 @@ public class MahoganyHomesPlugin extends Plugin
 		return skillIconManager.getSkillImage(Skill.CONSTRUCTION);
 	}
 
-	public String getContract()
+	public Contract getContract()
 	{
-		return "test";
+		return this.currentContract;
 	}
 }
