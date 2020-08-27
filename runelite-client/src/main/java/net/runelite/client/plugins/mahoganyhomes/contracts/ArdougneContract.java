@@ -28,61 +28,56 @@ import com.google.common.collect.ImmutableList;
 import java.util.HashMap;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
 public class ArdougneContract extends Contract
 {
 	private static final ImmutableList<Integer> JESS_FURNITURE_IDS = ImmutableList.of(
-		// Drawers
-		NullObjectID.NULL_40171,
-		// Drawers
-		NullObjectID.NULL_40172,
-		// Cabinet
-		NullObjectID.NULL_40173,
-		// Cabinet
-		NullObjectID.NULL_40174,
-		// Bed
-		NullObjectID.NULL_40175,
-		// Table
-		NullObjectID.NULL_40176,
+		// Drawers to Remove: 40187, Build Space: 40082
+		ObjectID.DRAWERS_40187, ObjectID.DRAWER_SPACE,
+		// Cabinets to Remove: 39899, 39905, Build Space: 40073w
+		ObjectID.CABINET_39899, ObjectID.CABINET_39905, ObjectID.CABINET_SPACE,
+		// Bed to Remove: 40193, Build Space: 40080
+		ObjectID.BED_40193, ObjectID.BED_SPACE_40080,
+		// Table to Remove: 40108, Build Space: 40070
+		ObjectID.TABLE_40108, ObjectID.TABLE_SPACE_40070,
+		// Broken Grandfather Clock: 40141
+		ObjectID.GRANDFATHER_CLOCK_40141,
 		// Bath
-		NullObjectID.NULL_40299
+		ObjectID.BROKEN_BATH
 	);
 
 	private static final ImmutableList<Integer> NOELLA_FURNITURE_IDS = ImmutableList.of(
-		// Dresser
-		NullObjectID.NULL_40156,
-		// Cupboard
-		NullObjectID.NULL_40157,
-		// Hat stand
-		NullObjectID.NULL_40158,
-		// Mirror
-		NullObjectID.NULL_40159,
-		// Drawers
-		NullObjectID.NULL_40160,
-		// Table
-		NullObjectID.NULL_40161,
-		// Table
-		NullObjectID.NULL_40162,
-		// Grandfather Clock
-		NullObjectID.NULL_40163
+		// Dresser to Remove: 33948, Build Space: 40076
+		ObjectID.DRESSER_39948, ObjectID.DRESSER_SPACE_40076,
+		// Cupboard to Remove: 40115, Build Space: 40078
+		ObjectID.CUPBOARD_40115, ObjectID.CUPBOARD_SPACE,
+		// Broken Hat stand: 40139
+		ObjectID.HAT_STAND_40139,
+		// Broken Mirror: 40179
+		ObjectID.BROKEN_MIRROR_40179,
+		// Drawers to Remove: 40181, Build Space: 40082
+		ObjectID.DRAWERS_40181, ObjectID.DRAWER_SPACE,
+		// Table to Remove: 40108, Build Space: 40070
+		ObjectID.TABLE_40108, ObjectID.TABLE_SPACE_40070,
+		// Broken Grandfather Clock: 40141
+		ObjectID.GRANDFATHER_CLOCK_40141
 	);
 
 	private static final ImmutableList<Integer> ROSS_FURNITURE_IDS = ImmutableList.of(
-		// Range
-		NullObjectID.NULL_40164,
-		// Drawers
-		NullObjectID.NULL_40165,
-		// Drawers
-		NullObjectID.NULL_40166,
-		// Large Bed
-		NullObjectID.NULL_40167,
-		// Hat Stand
-		NullObjectID.NULL_40168,
-		// Bed
-		NullObjectID.NULL_40169,
-		// Mirror
-		NullObjectID.NULL_40170
+		// Broken Range: 40148
+		ObjectID.BROKEN_RANGE_40148,
+		// Drawers to Remove: 40187, Build Space: 40082a
+		ObjectID.DRAWERS_40187,
+		// Large Bed to Remove: 40200, Build Space: 40080
+		ObjectID.BED_40200, ObjectID.BED_SPACE_40080,
+		// Broken Hat Stand: 40139
+		ObjectID.HAT_STAND_40139,
+		// Bed to Remove: 40207, Build Space: 40081
+		ObjectID.BED_40207, ObjectID.BED_SPACE_40081,
+		// Broken Mirror: 40179
+		ObjectID.BROKEN_MIRROR_40179
 	);
 
 	// Furniture mapping for World Overlay
@@ -99,9 +94,9 @@ public class ArdougneContract extends Contract
 	public static final HashMap<Integer, WorldPoint> npcCoordinateMap = new HashMap<Integer, WorldPoint>()
 	{
 		{
-			put(NpcID.JESS, new WorldPoint(2621, 3295, 0));
-			put(NpcID.NOELLA, new WorldPoint(2654, 3320, 0));
-			put(NpcID.ROSS, new WorldPoint(2614, 3318, 0));
+			put(NpcID.JESS, new WorldPoint(2622, 3298, 0));
+			put(NpcID.NOELLA, new WorldPoint(2659, 3328, 0));
+			put(NpcID.ROSS, new WorldPoint(2614, 3322, 0));
 		}
 	};
 
@@ -109,8 +104,8 @@ public class ArdougneContract extends Contract
 	private final HashMap<Integer, String> npcOverlayMap = new HashMap<Integer, String>()
 	{
 		{
-			put(NpcID.JESS, "Floor above pet insurance shop, south of church");
-			put(NpcID.NOELLA, "Floor above gem store north-west of market");
+			put(NpcID.JESS, "Floor above pet insurance shop");
+			put(NpcID.NOELLA, "North-west of market");
 			put(NpcID.ROSS, "North of church");
 		}
 	};

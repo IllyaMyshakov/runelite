@@ -28,59 +28,50 @@ import com.google.common.collect.ImmutableList;
 import java.util.HashMap;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
 public class FaladorContract extends Contract
 {
 	private static final ImmutableList<Integer> LARRY_FURNITURE_IDS = ImmutableList.of(
-		// Drawer
-		NullObjectID.NULL_40095,
-		// Drawer
-		NullObjectID.NULL_40096,
-		// Table
-		NullObjectID.NULL_40097,
-		// Table
-		NullObjectID.NULL_40098,
-		// Grandfather Clock
-		NullObjectID.NULL_40099,
-		// Range
-		NullObjectID.NULL_40297,
-		// Broken 40418
-		// Fixed 40419
-		// Hat Stand
-		NullObjectID.NULL_40298
+		// Drawer to Remove: 40151, Build Space: 40082
+		ObjectID.DRAWERS_40151, ObjectID.DRAWER_SPACE,
+		// Table to Remove: 40102, Build Space: 40070
+		ObjectID.TABLE_40102, ObjectID.TABLE_SPACE_40070,
+		// Broken Grandfather Clock: 40141
+		ObjectID.GRANDFATHER_CLOCK_40141,
+		// Broken Range: 40418
+		ObjectID.BROKEN_RANGE_40148,
+		// Broken Hat Stand: 40139
+		ObjectID.HAT_STAND_40139
 	);
 	private static final ImmutableList<Integer> NORMAN_FURNITURE_IDS = ImmutableList.of(
-		// Grandfather Clock
-		NullObjectID.NULL_40089,
-		// Table
-		NullObjectID.NULL_40090,
-		// Bed
-		NullObjectID.NULL_40091,
-		// Bookshelf
-		NullObjectID.NULL_40092,
-		// Drawers
-		NullObjectID.NULL_40093,
-		// Table
-		NullObjectID.NULL_40094,
-		// Range
-		NullObjectID.NULL_40296
+		// Broken Grandfather Clock: 40141
+		ObjectID.GRANDFATHER_CLOCK_40141,
+		// Table to Remove: 40102, Build Space: 40070
+		ObjectID.TABLE_40102, ObjectID.TABLE_SPACE_40070,
+		// Bed to Remove: 40128, Build Space: 40080
+		ObjectID.BED_40128, ObjectID.BED_SPACE_40080,
+		// Bookshelf to Remove: 40134, Build Space: 40074
+		ObjectID.OLD_BOOKSHELF_40134, ObjectID.BOOKCASE_SPACE_40074,
+		// Drawers to Remove: 40143, Build Space: 40082
+		ObjectID.DRAWERS_40143, ObjectID.DRAWER_SPACE,
+		// Table to Remove: 39967, Build Space: 40069
+		ObjectID.TABLE_39967, ObjectID.TABLE_SPACE_40069,
+		// Broken Range: 40148
+		ObjectID.BROKEN_RANGE_40148
 	);
 	private static final ImmutableList<Integer> TAU_FURNITURE_IDS = ImmutableList.of(
-		// Sink
-		NullObjectID.NULL_40083,
-		// Table
-		NullObjectID.NULL_40084,
-		// Table
-		NullObjectID.NULL_40085,
-		// Cupboard
-		NullObjectID.NULL_40086,
-		// Shelves
-		NullObjectID.NULL_40087,
-		// Shelves
-		NullObjectID.NULL_40088,
-		// Hat Stand
-		NullObjectID.NULL_40295
+		// Sink to Remove: ,_________
+		ObjectID.BROKEN_SINK,
+		// Tables to Remove: 40102, 40108, Build Space: 40070
+		ObjectID.TABLE_40102, ObjectID.TABLE_40108, ObjectID.TABLE_SPACE_40070,
+		// Cupboard to Remove: 40115, Build Space: 40078
+		ObjectID.CUPBOARD_40115, ObjectID.CUPBOARD_SPACE,
+		// Shelves to Remove: 40121, Build Space: 40077
+		ObjectID.SHELVES_40121, ObjectID.SHELVES_SPACE,
+		// Broken Hat Stand: 40139
+		ObjectID.HAT_STAND_40139
 	);
 	// Furniture mapping for World Overlay
 	private static final HashMap<Integer, ImmutableList<Integer>> npcFurnitureMap = new HashMap<Integer, ImmutableList<Integer>>()
@@ -96,9 +87,9 @@ public class FaladorContract extends Contract
 	public static final HashMap<Integer, WorldPoint> npcCoordinateMap = new HashMap<Integer, WorldPoint>()
 	{
 		{
-			put(NpcID.LARRY_10418, new WorldPoint(3040, 3367, 0));
-			put(NpcID.NORMAN, new WorldPoint(3036, 3343, 0));
-			put(NpcID.TAU, new WorldPoint(3044, 3345, 0));
+			put(NpcID.LARRY_10418, new WorldPoint(3038, 3370, 0));
+			put(NpcID.NORMAN, new WorldPoint(3038, 3350, 0));
+			put(NpcID.TAU, new WorldPoint(3048, 3352, 0));
 		}
 	};
 
