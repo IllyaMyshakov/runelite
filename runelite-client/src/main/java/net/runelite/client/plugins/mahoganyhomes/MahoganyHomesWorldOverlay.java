@@ -28,13 +28,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -65,47 +75,72 @@ public class MahoganyHomesWorldOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Contract contract = plugin.getContract();
-
-		if (contract != null)
+		if (plugin.getContract() != null)
 		{
-			Player local = client.getLocalPlayer();
-			renderTiles(graphics, local);
+			renderFurniture(graphics, plugin);
 		}
 
 		return null;
 	}
 
-	private void renderTiles(Graphics2D graphics, Player local)
+	private void renderFurniture(Graphics2D graphics, MahoganyHomesPlugin plugin)
 	{
-		LocalPoint localLocation = local.getLocalLocation();
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
 
+		int z = client.getPlane();
 
-	}
-
-	private void renderFurniture(Graphics2D graphics, Tile tile, Player player)
-	{
-		GameObject[] gameObjects = tile.getGameObjects();
-		if (gameObjects != null)
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
-			for (GameObject gameObject : gameObjects)
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
 			{
-				if (gameObject != null)
-				{
-					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
-					{
-						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
-					}
+				Tile tile = tiles[z][x][y];
 
-					// Draw a polygon around the convex hull
-					// of the model vertices
-					Shape p = gameObject.getConvexHull();
-					if (p != null)
+				if (tile == null)
+				{
+					continue;
+				}
+
+				Player player = client.getLocalPlayer();
+				if (player == null)
+				{
+					continue;
+				}
+				GameObject[] gameObjects = tile.getGameObjects();
+
+				if (gameObjects != null)
+				{
+					for (GameObject gameObject : gameObjects)
 					{
-						graphics.draw(p);
+						if (gameObject != null)
+						{
+							HashSet<Integer> furniture = plugin.getContract().getFurniture();
+							NPC[] npcs = client.getCachedNPCs();
+							HashSet<Integer> npcIds = new HashSet<Integer>(
+								Arrays.asList(Arrays.stream(npcs).map(NPC::getId).toArray(size ->
+									new Integer[npcs.length]))
+							);
+							npcIds.retainAll(furniture);
+							if(!npcIds.isEmpty())
+							{
+								if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
+								{
+									OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+								}
+
+								// Draw a polygon around the convex hull
+								// of the model vertices
+								Shape p = gameObject.getConvexHull();
+								if (p != null)
+								{
+									graphics.draw(p);
+								}
+							}
+						}
 					}
 				}
 			}
 		}
+
 	}
 }

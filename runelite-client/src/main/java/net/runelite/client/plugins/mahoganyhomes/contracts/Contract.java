@@ -26,6 +26,7 @@ package net.runelite.client.plugins.mahoganyhomes.contracts;
 
 import com.google.common.collect.ImmutableList;
 import java.util.HashMap;
+import java.util.HashSet;
 import lombok.Getter;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
@@ -76,6 +77,28 @@ public abstract class Contract
 		}
 	};
 
+	private static final HashMap<Integer, Region> NPC_LOCATIONS = new HashMap<Integer, Region>()
+	{
+		{
+			// Ardougne
+			put(NpcID.JESS, Region.ARDOUGNE);
+			put(NpcID.NOELLA, Region.ARDOUGNE);
+			put(NpcID.ROSS, Region.ARDOUGNE);
+			// Falador
+			put(NpcID.LARRY_10418, Region.FALADOR);
+			put(NpcID.NORMAN, Region.FALADOR);
+			put(NpcID.TAU, Region.FALADOR);
+			// Hosidius
+			put(NpcID.BARBARA, Region.HOSIDIUS);
+			put(NpcID.LEELA_10423, Region.HOSIDIUS);
+			put(NpcID.MARIAH, Region.HOSIDIUS);
+			// Varrock
+			put(NpcID.BOB_10414, Region.VARROCK);
+			put(NpcID.JEFF_10415, Region.VARROCK);
+			put(NpcID.SARAH_10416, Region.VARROCK);
+		}
+	};
+
 	private final String npcName;
 	private final Integer npcId;
 	private final Region region;
@@ -100,28 +123,35 @@ public abstract class Contract
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getHint() + ", " + getRegion())
+			.left(getHint() + ", " + getRegionString(region))
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 	}
 
 	public abstract String getHint();
 
-	private String getRegion()
+	public abstract HashSet<Integer> getFurniture();
+
+	public static Region getRegion(Integer npcId)
 	{
-		if (region == Region.ARDOUGNE)
+		return NPC_LOCATIONS.get(npcId);
+	}
+
+	private static String getRegionString(Region assignedRegion)
+	{
+		if (assignedRegion == Region.ARDOUGNE)
 		{
 			return "Ardougne";
 		}
-		if (region == Region.FALADOR)
+		if (assignedRegion == Region.FALADOR)
 		{
 			return "Falador";
 		}
-		if (region == Region.HOSIDIUS)
+		if (assignedRegion == Region.HOSIDIUS)
 		{
 			return "Hosidius";
 		}
-		if (region == Region.VARROCK)
+		if (assignedRegion == Region.VARROCK)
 		{
 			return "Varrock";
 		}

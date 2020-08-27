@@ -33,8 +33,8 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.NpcID;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.Subscribe;
@@ -144,6 +144,11 @@ public class MahoganyHomesPlugin extends Plugin
 		return constructionIcon;
 	}
 
+	public Contract getContract()
+	{
+		return currentContract;
+	}
+
 	private Contract setContract(String text)
 	{
 		if (text.isEmpty())
@@ -158,23 +163,24 @@ public class MahoganyHomesPlugin extends Plugin
 			if (text.contains(npc))
 			{
 				int npcId = Contract.NPC_IDS.get(npc);
+				Contract.Region region = Contract.getRegion(npcId);
 				// Check if Ardougne contracts have this NPC
-				if (ArdougneContract.npcCoordinateMap.containsKey(npcId))
+				if (region == Contract.Region.ARDOUGNE)
 				{
 					ret = new ArdougneContract(npc, npcId);
 				}
 				// Check if Falador contracts have this NPC
-				if (FaladorContract.npcCoordinateMap.containsKey(npcId))
+				if (region == Contract.Region.FALADOR)
 				{
 					ret = new FaladorContract(npc, npcId);
 				}
 				// Check if Hosidius contracts have this NPC
-				if (HosidiusContract.npcCoordinateMap.containsKey(npcId))
+				if (region == Contract.Region.HOSIDIUS)
 				{
 					ret = new HosidiusContract(npc, npcId);
 				}
 				// Check if Varrock contracts have this NPC
-				if (VarrockContract.npcCoordinateMap.containsKey(npcId))
+				if (region == Contract.Region.VARROCK)
 				{
 					ret = new VarrockContract(npc, npcId);
 				}
@@ -182,10 +188,5 @@ public class MahoganyHomesPlugin extends Plugin
 			}
 		}
 		return ret;
-	}
-
-	public Contract getContract()
-	{
-		return currentContract;
 	}
 }

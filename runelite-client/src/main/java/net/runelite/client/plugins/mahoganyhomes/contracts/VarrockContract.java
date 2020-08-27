@@ -26,6 +26,7 @@ package net.runelite.client.plugins.mahoganyhomes.contracts;
 
 import com.google.common.collect.ImmutableList;
 import java.util.HashMap;
+import java.util.HashSet;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
@@ -33,53 +34,81 @@ import net.runelite.api.coords.WorldPoint;
 
 public class VarrockContract extends Contract
 {
-	private static final ImmutableList<Integer> BOB_FURNITURE_IDS = ImmutableList.of(
-		// Large Table to Remove: 39892, Build Space: 40071
-		ObjectID.TEAK_TABLE_39892, ObjectID.TABLE_SPACE_40071,
-		// Broken Grandfather Clock: 39897
-		ObjectID.BROKEN_GRANDFATHER_CLOCK,
-		// Cabinets to Remove: 39899, 39905, Build Space: 40073
-		ObjectID.CABINET_39899, ObjectID.CABINET_39905, ObjectID.CABINET_SPACE,
-		// Bookcase to Remove: 39911, Build Space: 40074
-		ObjectID.BOOKCASE_39911, ObjectID.BOOKCASE_SPACE_40074,
-		// Wardrobe to Remove: 39917, Build Space: 40075
-		ObjectID.WARDROBE_39917, ObjectID.WARDROBE_SPACE_40075,
-		// Drawers to Remove: 39923, Build Space: 40082
-		ObjectID.DRAWERS_39923, ObjectID.DRAWER_SPACE
-	);
-	private static final ImmutableList<Integer> JEFF_FURNITURE_IDS = ImmutableList.of(
-		// Table to Remove: , Build Space: 40070
-		NullObjectID.NULL_39989, ObjectID.TABLE_SPACE_40070,
-		// Bookcase to Remove: 39911, Build Space: 40074
-		ObjectID.BOOKCASE_39911, ObjectID.BOOKCASE_SPACE_40074,
-		// Shelves to Remove: 39935, Build Space: 40077
-		ObjectID.SHELVES_39935, ObjectID.SHELVES_SPACE,
-		// Bed to Remove: 39942, Build Space: 40080
-		ObjectID.BED_39942, ObjectID.BED_SPACE_40080,
-		// Drawer to Remove: 39923, Build Space: 40082
-		ObjectID.DRAWERS_39923, ObjectID.DRAWER_SPACE,
-		// Dresser to Remove: 39948, Build Space: 40076
-		ObjectID.DRESSER_39948, ObjectID.DRESSER_SPACE_40076,
-		// Broken Mirror: 39953
-		ObjectID.BROKEN_MIRROR,
-		// Chair to Remove: 39955, Build Space: 40079
-		ObjectID.CHAIR_39955, ObjectID.CHAIR_SPACE_40079
-	);
+	private static final HashSet<Integer> BOB_FURNITURE_IDS = new HashSet<Integer>()
+	{
+		{
+			// Large Table to Remove: 39892, Build Space: 40071
+			add(ObjectID.TEAK_TABLE_39892);
+			add(ObjectID.TABLE_SPACE_40071);
+			// Broken Grandfather Clock: 39897
+			add(ObjectID.BROKEN_GRANDFATHER_CLOCK);
+			// Cabinets to Remove: 39899, 39905, Build Space: 40073
+			add(ObjectID.CABINET_39899);
+			add(ObjectID.CABINET_39905);
+			add(ObjectID.CABINET_SPACE);
+			// Bookcase to Remove: 39911, Build Space: 40074
+			add(ObjectID.BOOKCASE_39911);
+			add(ObjectID.BOOKCASE_SPACE_40074);
+			// Wardrobe to Remove: 39917, Build Space: 40075
+			add(ObjectID.WARDROBE_39917);
+			add(ObjectID.WARDROBE_SPACE_40075);
+			// Drawers to Remove: 39923, Build Space: 40082
+			add(ObjectID.DRAWERS_39923);
+			add(ObjectID.DRAWER_SPACE);
+		}
+	};
+	private static final HashSet<Integer> JEFF_FURNITURE_IDS = new HashSet<Integer>()
+	{
+		{
+			// Table to Remove: , Build Space: 40070
+			add(NullObjectID.NULL_39989);
+			add(ObjectID.TABLE_SPACE_40070);
+			// Bookcase to Remove: 39911, Build Space: 40074
+			add(ObjectID.BOOKCASE_39911);
+			add(ObjectID.BOOKCASE_SPACE_40074);
+			// Shelves to Remove: 39935, Build Space: 40077
+			add(ObjectID.SHELVES_39935);
+			add(ObjectID.SHELVES_SPACE);
+			// Bed to Remove: 39942, Build Space: 40080
+			add(ObjectID.BED_39942);
+			add(ObjectID.BED_SPACE_40080);
+			// Drawer to Remove: 39923, Build Space: 40082
+			add(ObjectID.DRAWERS_39923);
+			add(ObjectID.DRAWER_SPACE);
+			// Dresser to Remove: 39948, Build Space: 40076
+			add(ObjectID.DRESSER_39948);
+			add(ObjectID.DRESSER_SPACE_40076);
+			// Broken Mirror: 39953
+			add(ObjectID.BROKEN_MIRROR);
+			// Chair to Remove: 39955, Build Space: 40079
+			add(ObjectID.CHAIR_39955);
+			add(ObjectID.CHAIR_SPACE_40079);
+		}
+	};
 	// Furniture mapping for World Overlay
-	private static final ImmutableList<Integer> SARAH_FURNITURE_IDS = ImmutableList.of(
-		// Tables to Remove: 39961, 39967, Build Space: 40069, 40070
-		ObjectID.TABLE_39961, ObjectID.TABLE_39967, ObjectID.TABLE_SPACE_40069, ObjectID.TABLE_SPACE_40070,
-		// Bed to Remove: 39974, Build Space: 40081
-		ObjectID.BED_39974, ObjectID.BED_SPACE_40081,
-		// Dresser to Remove: 39948, Build Space: 40076
-		ObjectID.DRESSER_39948, ObjectID.DRESSER_SPACE_40076,
-		// Shelves to Remove: 39935, Build Space: 40077
-		ObjectID.SHELVES_39935, ObjectID.SHELVES_SPACE,
-		// Broken Range: 40148
-		ObjectID.BROKEN_RANGE_40148
-	);
+	private static final HashSet<Integer> SARAH_FURNITURE_IDS = new HashSet<Integer>()
+	{
+		{
+			// Tables to Remove: 39961, 39967, Build Space: 40069, 40070
+			add(ObjectID.TABLE_39961);
+			add(ObjectID.TABLE_39967);
+			add(ObjectID.TABLE_SPACE_40069);
+			add(ObjectID.TABLE_SPACE_40070);
+			// Bed to Remove: 39974, Build Space: 40081
+			add(ObjectID.BED_39974);
+			add(ObjectID.BED_SPACE_40081);
+			// Dresser to Remove: 39948, Build Space: 40076
+			add(ObjectID.DRESSER_39948);
+			add(ObjectID.DRESSER_SPACE_40076);
+			// Shelves to Remove: 39935, Build Space: 40077
+			add(ObjectID.SHELVES_39935);
+			add(ObjectID.SHELVES_SPACE);
+			// Broken Range: 40148
+			add(ObjectID.BROKEN_RANGE_40148);
+		}
+	};
 	// Furniture mapping for World Overlay
-	private static final HashMap<Integer, ImmutableList<Integer>> npcFurnitureMap = new HashMap<Integer, ImmutableList<Integer>>()
+	private static final HashMap<Integer, HashSet<Integer>> npcFurnitureMap = new HashMap<Integer, HashSet<Integer>>()
 	{
 		{
 			put(NpcID.BOB_10414, BOB_FURNITURE_IDS);
@@ -117,5 +146,11 @@ public class VarrockContract extends Contract
 	public String getHint()
 	{
 		return npcOverlayMap.get(getNpcId());
+	}
+
+	@Override
+	public HashSet<Integer> getFurniture()
+	{
+		return npcFurnitureMap.get(getNpcId());
 	}
 }
