@@ -89,7 +89,7 @@ public class HosidiusContract extends Contract
 			// Bed to Remove: 40043, Build Space: 40081
 			add(ObjectID.BED_40043);
 			add(ObjectID.BED_SPACE_40081);
-			// Broken Sink: --------
+			// Broken Sink: 40022
 			add(ObjectID.BROKEN_SINK);
 			// Cupboard to Remove: 40037, Build Space: 40078
 			add(ObjectID.CUPBOARD_40037);

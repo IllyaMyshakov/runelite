@@ -28,13 +28,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
@@ -46,6 +50,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
+import net.runelite.client.plugins.poh.PohIcons;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -77,7 +82,7 @@ public class MahoganyHomesWorldOverlay extends Overlay
 	{
 		if (plugin.getContract() != null)
 		{
-			renderFurniture(graphics, plugin);
+//			renderFurniture(graphics, plugin);
 		}
 
 		return null;
@@ -85,62 +90,29 @@ public class MahoganyHomesWorldOverlay extends Overlay
 
 	private void renderFurniture(Graphics2D graphics, MahoganyHomesPlugin plugin)
 	{
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
-
-		int z = client.getPlane();
-
-		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+		if(localLocation != null)
 		{
-			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
-			{
-				Tile tile = tiles[z][x][y];
 
-				if (tile == null)
-				{
-					continue;
-				}
-
-				Player player = client.getLocalPlayer();
-				if (player == null)
-				{
-					continue;
-				}
-				GameObject[] gameObjects = tile.getGameObjects();
-
-				if (gameObjects != null)
-				{
-					for (GameObject gameObject : gameObjects)
-					{
-						if (gameObject != null)
-						{
-							HashSet<Integer> furniture = plugin.getContract().getFurniture();
-							NPC[] npcs = client.getCachedNPCs();
-							HashSet<Integer> npcIds = new HashSet<Integer>(
-								Arrays.asList(Arrays.stream(npcs).map(NPC::getId).toArray(size ->
-									new Integer[npcs.length]))
-							);
-							npcIds.retainAll(furniture);
-							if(!npcIds.isEmpty())
-							{
-								if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
-								{
-									OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
-								}
-
-								// Draw a polygon around the convex hull
-								// of the model vertices
-								Shape p = gameObject.getConvexHull();
-								if (p != null)
-								{
-									graphics.draw(p);
-								}
-							}
-						}
-					}
-				}
-			}
+//		plugin.getPohObjects().forEach((object, tile) ->
+//		{
+//			LocalPoint location = object.getLocalLocation();
+//			if (tile.getPlane() == client.getPlane() && localLocation.distanceTo(location) <= MAX_DISTANCE)
+//			{
+//				PohIcons icon = PohIcons.getIcon(object.getId());
+//
+//				if (icon != null && iconList.contains(icon))
+//				{
+//					net.runelite.api.Point minimapLoc = Perspective.getMiniMapImageLocation(client, object.getLocalLocation(), icon.getImage());
+//
+//					if (minimapLoc != null)
+//					{
+//						graphics.drawImage(icon.getImage(), minimapLoc.getX(), minimapLoc.getY(), null);
+//					}
+//				}
+//			}
+//		});
 		}
-
 	}
+
 }

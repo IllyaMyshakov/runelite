@@ -33,10 +33,14 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.TileObject;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -76,7 +80,7 @@ public class MahoganyHomesPlugin extends Plugin
 	@Getter
 	private Client client;
 
-	private Contract currentContract = null;
+	private Contract currentContract = new ArdougneContract("Ross", Contract.getNpcID("Ross"));
 	private BufferedImage mapArrow;
 	private BufferedImage constructionIcon;
 
@@ -120,6 +124,25 @@ public class MahoganyHomesPlugin extends Plugin
 
 	}
 
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		GameObject gameObject = event.getGameObject();
+
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(GameObjectChanged event)
+	{
+		GameObject gameObject = event.getGameObject();
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		GameObject gameObject = event.getGameObject();
+	}
+
 	public BufferedImage getMapArrow()
 	{
 		if (mapArrow != null)
@@ -158,11 +181,11 @@ public class MahoganyHomesPlugin extends Plugin
 
 		Contract ret = null;
 
-		for (String npc : Contract.NPC_NAMES)
+		for (String npc : Contract.getNpcNames())
 		{
 			if (text.contains(npc))
 			{
-				int npcId = Contract.NPC_IDS.get(npc);
+				int npcId = Contract.getNpcID(npc);
 				Contract.Region region = Contract.getRegion(npcId);
 				// Check if Ardougne contracts have this NPC
 				if (region == Contract.Region.ARDOUGNE)

@@ -44,7 +44,7 @@ public abstract class Contract
 		ARDOUGNE, FALADOR, HOSIDIUS, VARROCK
 	}
 
-	public static final ImmutableList<String> NPC_NAMES = ImmutableList.of(
+	private static final ImmutableList<String> NPC_NAMES = ImmutableList.of(
 		// Ardougne
 		"Jess", "Noella", "Ross",
 		// Falador
@@ -126,6 +126,16 @@ public abstract class Contract
 			.left(getHint() + ", " + getRegionString(region))
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
+	}
+
+	public static Integer getNpcID(String npc)
+	{
+		return NPC_IDS.get(npc);
+	}
+
+	public static ImmutableList<String> getNpcNames()
+	{
+		return NPC_NAMES;
 	}
 
 	public abstract String getHint();
