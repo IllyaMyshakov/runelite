@@ -94,24 +94,7 @@ public class MahoganyHomesWorldOverlay extends Overlay
 		if(localLocation != null)
 		{
 
-//		plugin.getPohObjects().forEach((object, tile) ->
-//		{
-//			LocalPoint location = object.getLocalLocation();
-//			if (tile.getPlane() == client.getPlane() && localLocation.distanceTo(location) <= MAX_DISTANCE)
-//			{
-//				PohIcons icon = PohIcons.getIcon(object.getId());
-//
-//				if (icon != null && iconList.contains(icon))
-//				{
-//					net.runelite.api.Point minimapLoc = Perspective.getMiniMapImageLocation(client, object.getLocalLocation(), icon.getImage());
-//
-//					if (minimapLoc != null)
-//					{
-//						graphics.drawImage(icon.getImage(), minimapLoc.getX(), minimapLoc.getY(), null);
-//					}
-//				}
-//			}
-//		});
+
 		}
 	}
 

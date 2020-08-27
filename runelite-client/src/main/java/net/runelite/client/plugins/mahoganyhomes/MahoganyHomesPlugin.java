@@ -80,7 +80,7 @@ public class MahoganyHomesPlugin extends Plugin
 	@Getter
 	private Client client;
 
-	private Contract currentContract = new ArdougneContract("Ross", Contract.getNpcID("Ross"));
+	private Contract currentContract = null;
 	private BufferedImage mapArrow;
 	private BufferedImage constructionIcon;
 
