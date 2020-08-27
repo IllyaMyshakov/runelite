@@ -85,7 +85,8 @@ public class ArdougneContract extends Contract
 		NullObjectID.NULL_40170
 	);
 
-	private static final HashMap<Integer, ImmutableList<Integer>> NPC_FURNITURE_LIST = new HashMap<Integer, ImmutableList<Integer>>()
+	// Furniture mapping for World Overlay
+	private static final HashMap<Integer, ImmutableList<Integer>> npcFurnitureMap = new HashMap<Integer, ImmutableList<Integer>>()
 	{
 		{
 			put(NpcID.JESS, JESS_FURNITURE_IDS);
@@ -94,71 +95,33 @@ public class ArdougneContract extends Contract
 		}
 	};
 
-	private static final HashMap<Integer, WorldPoint> NPC_LOCATION_LIST = new HashMap<Integer, WorldPoint>()
+	// Coordinate mapping for World Map Points
+	public static final HashMap<Integer, WorldPoint> npcCoordinateMap = new HashMap<Integer, WorldPoint>()
 	{
 		{
-			put(NpcID.JESS, new WorldPoint(0, 0, 0));
-			put(NpcID.NOELLA, new WorldPoint(0, 0, 0));
-			put(NpcID.ROSS, new WorldPoint(0, 0, 0));
+			put(NpcID.JESS, new WorldPoint(2621, 3295, 0));
+			put(NpcID.NOELLA, new WorldPoint(2654, 3320, 0));
+			put(NpcID.ROSS, new WorldPoint(2614, 3318, 0));
 		}
 	};
-//		);
-//	private static final ImmutableList<ArdougneContract> FURNITURE = ImmutableList.of(
-//		// ---NPCs--- (obtained from https://oldschool.runescape.wiki/w/Mahogany_Homes)
-//		// Jess
-//		// Drawers
-//		new ArdougneContract(NullObjectID.NULL_40171, new WorldPoint(2612, 3296, 1), "Jess"),
-//		// Drawers
-//		new ArdougneContract(NullObjectID.NULL_40172, new WorldPoint(2620, 3291, 1), "Jess"),
-//		// Cabinet
-//		new ArdougneContract(NullObjectID.NULL_40173, new WorldPoint(2621, 3295, 1), "Jess"),
-//		// Cabinet
-//		new ArdougneContract(NullObjectID.NULL_40174, new WorldPoint(2622, 3295, 1), "Jess"),
-//		// Bed
-//		new ArdougneContract(NullObjectID.NULL_40175, new WorldPoint(2615, 3296, 1), "Jess"),
-//		// Table
-//		new ArdougneContract(NullObjectID.NULL_40176, new WorldPoint(2612, 3294, 1), "Jess"),
-//		// Bath
-//		new ArdougneContract(NullObjectID.NULL_40299, new WorldPoint(2616, 3291, 1), "Jess"),
-//
-//		// Noella
-//		// Dresser
-//		new ArdougneContract(NullObjectID.NULL_40156, new WorldPoint(2662, 3323, 1), "Noella"),
-//		// Cupboard
-//		new ArdougneContract(NullObjectID.NULL_40157, new WorldPoint(2661, 3321, 1), "Noella"),
-//		// Hat stand
-//		new ArdougneContract(NullObjectID.NULL_40158, new WorldPoint(2665, 3318, 1), "Noella"),
-//		// Mirror
-//		new ArdougneContract(NullObjectID.NULL_40159, new WorldPoint(2661, 3318, 1), "Noella"),
-//		// Drawers
-//		new ArdougneContract(NullObjectID.NULL_40160, new WorldPoint(2657, 3322, 1), "Noella"),
-//		// Table
-//		new ArdougneContract(NullObjectID.NULL_40161, new WorldPoint(2654, 3320, 1), "Noella"),
-//		// Table
-//		new ArdougneContract(NullObjectID.NULL_40162, new WorldPoint(2657, 3318, 1), "Noella"),
-//		// Grandfather Clock
-//		new ArdougneContract(NullObjectID.NULL_40163, new WorldPoint(2653, 3322, 1), "Noella"),
-//
-//		// Ross
-//		// Range
-//		new ArdougneContract(NullObjectID.NULL_40164, new WorldPoint(2617, 3318, 0), "Ross"),
-//		// Drawers
-//		new ArdougneContract(NullObjectID.NULL_40165, new WorldPoint(2611, 3318, 0), "Ross"),
-//		// Drawers
-//		new ArdougneContract(NullObjectID.NULL_40166, new WorldPoint(2611, 3315, 0), "Ross"),
-//		// Large Bed
-//		new ArdougneContract(NullObjectID.NULL_40167, new WorldPoint(2614, 3318, 1), "Ross"),
-//		// Hat Stand
-//		new ArdougneContract(NullObjectID.NULL_40168, new WorldPoint(2615, 3316, 1), "Ross"),
-//		// Bed
-//		new ArdougneContract(NullObjectID.NULL_40169, new WorldPoint(2618, 3319, 1), "Ross"),
-//		// Mirror
-//		new ArdougneContract(NullObjectID.NULL_40170, new WorldPoint(2618, 3317, 1), "Ross")
-//
-//	);
 
-	public ArdougneContract(NpcID npc, WorldPoint location)
+	// Location mapping for Overlay
+	private final HashMap<Integer, String> npcOverlayMap = new HashMap<Integer, String>()
 	{
-		super(npc, Region.ARDOUGNE, location);
+		{
+			put(NpcID.JESS, "Floor above pet insurance shop, south of church");
+			put(NpcID.NOELLA, "Floor above gem store north-west of market");
+			put(NpcID.ROSS, "North of church");
+		}
+	};
+
+	public ArdougneContract(String npc, Integer npcId)
+	{
+		super(npc, npcId, Region.ARDOUGNE, npcCoordinateMap.get(npcId));
+	}
+	@Override
+	public String getHint()
+	{
+		return npcOverlayMap.get(getNpcId());
 	}
 }

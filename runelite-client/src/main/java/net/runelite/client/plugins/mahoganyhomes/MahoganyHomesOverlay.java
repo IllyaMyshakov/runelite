@@ -28,20 +28,18 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class MahoganyHomesOverlay extends OverlayPanel
 {
-	private final Client client;
 	private final MahoganyHomesPlugin plugin;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
 	private MahoganyHomesOverlay(Client client, MahoganyHomesPlugin plugin)
 	{
-		this.client = client;
 		this.plugin = plugin;
 		setPriority(OverlayPriority.LOW);
 	}
@@ -49,12 +47,16 @@ public class MahoganyHomesOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-//		final BufferedImage constructionImage = getConstructionImage();
-//		imagePanelComponent.getChildren().clear();
-//		imagePanelComponent.getChildren().add(new ImageComponent(constructionImage));
+		Contract contract = plugin.getContract();
 
-//		return imagePanelComponent.render(graphics);
-		return null;
+		if(contract == null)
+		{
+			return null;
+		}
+
+		contract.makeOverlay(panelComponent, plugin);
+
+		return super.render(graphics);
 	}
 
 }

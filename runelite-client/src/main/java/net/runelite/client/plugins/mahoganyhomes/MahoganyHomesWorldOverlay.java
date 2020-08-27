@@ -27,28 +27,39 @@ package net.runelite.client.plugins.mahoganyhomes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
+import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class MahoganyHomesWorldOverlay extends Overlay
 {
 	public static final int IMAGE_Z_OFFSET = 30;
-
+	private static final int MAX_DISTANCE = 2350;
+	private static final Color GREEN = new Color(0, 200, 83);
 	public static final Color CLICKBOX_BORDER_COLOR = Color.RED;
 	public static final Color CLICKBOX_HOVER_BORDER_COLOR = CLICKBOX_BORDER_COLOR.darker();
 	public static final Color CLICKBOX_FILL_COLOR = new Color(255, 0, 0, 20);
 
 	private final MahoganyHomesPlugin plugin;
+	private final Client client;
 
 	@Inject
-	private MahoganyHomesWorldOverlay(MahoganyHomesPlugin plugin)
+	private MahoganyHomesWorldOverlay(MahoganyHomesPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
+		this.client = client;
 	}
 
 	@Override
@@ -58,9 +69,43 @@ public class MahoganyHomesWorldOverlay extends Overlay
 
 		if (contract != null)
 		{
-
+			Player local = client.getLocalPlayer();
+			renderTiles(graphics, local);
 		}
 
 		return null;
+	}
+
+	private void renderTiles(Graphics2D graphics, Player local)
+	{
+		LocalPoint localLocation = local.getLocalLocation();
+
+
+	}
+
+	private void renderFurniture(Graphics2D graphics, Tile tile, Player player)
+	{
+		GameObject[] gameObjects = tile.getGameObjects();
+		if (gameObjects != null)
+		{
+			for (GameObject gameObject : gameObjects)
+			{
+				if (gameObject != null)
+				{
+					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
+					{
+						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
+					}
+
+					// Draw a polygon around the convex hull
+					// of the model vertices
+					Shape p = gameObject.getConvexHull();
+					if (p != null)
+					{
+						graphics.draw(p);
+					}
+				}
+			}
+		}
 	}
 }

@@ -79,8 +79,8 @@ public class HosidiusContract extends Contract
 		// Hat Stand
 		NullObjectID.NULL_40289
 	);
-
-	private static final HashMap<Integer, ImmutableList<Integer>> NPC_FURNITURE_LIST = new HashMap<Integer, ImmutableList<Integer>>()
+	// Furniture mapping for World Overlay
+	private static final HashMap<Integer, ImmutableList<Integer>> npcFurnitureMap = new HashMap<Integer, ImmutableList<Integer>>()
 	{
 		{
 			put(NpcID.BARBARA, BARBARA_FURNITURE_IDS);
@@ -89,66 +89,34 @@ public class HosidiusContract extends Contract
 		}
 	};
 
-	private static final HashMap<Integer, WorldPoint> NPC_LOCATION_LIST = new HashMap<Integer, WorldPoint>()
+	// Coordinate mapping for World Map Points
+	public static final HashMap<Integer, WorldPoint> npcCoordinateMap = new HashMap<Integer, WorldPoint>()
 	{
 		{
-			put(NpcID.BARBARA, new WorldPoint(0,0,0));
-			put(NpcID.LEELA_10423, new WorldPoint(0,0,0));
-			put(NpcID.MARIAH, new WorldPoint(0,0,0));
+			put(NpcID.BARBARA, new WorldPoint(1750, 3532, 0));
+			put(NpcID.LEELA_10423, new WorldPoint(1787, 3594, 0));
+			put(NpcID.MARIAH, new WorldPoint(1766, 3619, 0));
 		}
 	};
 
-//	private static final ImmutableList<HosidiusContract> FURNITURE = ImmutableList.of(
-//		// ---NPCs--- (obtained from https://oldschool.runescape.wiki/w/Mahogany_Homes)
-//		// Barbara
-//		// Grandfather Clock
-//		new HosidiusContract(NullObjectID.NULL_40011, new WorldPoint(1749, 3536, 0), "Barbara"),
-//		// Table
-//		new HosidiusContract(NullObjectID.NULL_40012, new WorldPoint(1752, 3535, 0), "Barbara"),
-//		// Bed
-//		new HosidiusContract(NullObjectID.NULL_40013, new WorldPoint(1749, 3539, 0), "Barbara"),
-//		// Chair
-//		new HosidiusContract(NullObjectID.NULL_40014, new WorldPoint(1751, 3534, 0), "Barbara"),
-//		// Chair
-//		new HosidiusContract(NullObjectID.NULL_40015, new WorldPoint(1750, 3532, 0), "Barbara"),
-//		// Drawers
-//		new HosidiusContract(NullObjectID.NULL_40294, new WorldPoint(1754, 3535, 0), "Barbara"),
-//
-//		// Leela
-//		// Table
-//		new HosidiusContract(NullObjectID.NULL_40007, new WorldPoint(1784, 3594, 0), "Leela"),
-//		// Table
-//		new HosidiusContract(NullObjectID.NULL_40008, new WorldPoint(1782, 3592, 0), "Leela"),
-//		// Table
-//		new HosidiusContract(NullObjectID.NULL_40009, new WorldPoint(1782, 3592, 1), "Leela"),
-//		// Mirror
-//		new HosidiusContract(NullObjectID.NULL_40010, new WorldPoint(1786, 3590, 1), "Leela"),
-//		// Sink
-//		new HosidiusContract(NullObjectID.NULL_40290, new WorldPoint(1787, 3594, 0), "Leela"),
-//		// Bed
-//		new HosidiusContract(NullObjectID.NULL_40291, new WorldPoint(1783, 3591, 0), "Leela"),
-//		// Cupboard
-//		new HosidiusContract(NullObjectID.NULL_40292, new WorldPoint(1788, 3590, 1), "Leela"),
-//
-//		// Mariah
-//		// Table
-//		new HosidiusContract(NullObjectID.NULL_40002, new WorldPoint(1770, 3622, 0), "Mariah"),
-//		// Shelves
-//		new HosidiusContract(NullObjectID.NULL_40003, new WorldPoint(1766, 3619, 0), "Mariah"),
-//		// Bed
-//		new HosidiusContract(NullObjectID.NULL_40004, new WorldPoint(1765, 3622, 1), "Mariah"),
-//		// Table
-//		new HosidiusContract(NullObjectID.NULL_40005, new WorldPoint(1764, 3620, 1), "Mariah"),
-//		// Sink
-//		new HosidiusContract(NullObjectID.NULL_40287, new WorldPoint(1763, 3622, 0), "Mariah"),
-//		// Cupboard
-//		new HosidiusContract(NullObjectID.NULL_40288, new WorldPoint(1763, 3620, 0), "Mariah"),
-//		// Hat Stand
-//		new HosidiusContract(NullObjectID.NULL_40289, new WorldPoint(1764, 3623, 0), "Mariah")
-//	);
-
-	public HosidiusContract(NpcID npc, WorldPoint location)
+	// Location map for Overlay
+	public static final HashMap<Integer, String> npcOverlayMap = new HashMap<Integer, String>()
 	{
-		super(npc, Region.HOSIDIUS, location);
+		{
+			put(NpcID.BARBARA, "South-east of wind mill");
+			put(NpcID.LEELA_10423, "North-east of Cooking Hall");
+			put(NpcID.MARIAH, "South-west of estate agent");
+		}
+	};
+
+	public HosidiusContract(String npc, Integer npcId)
+	{
+		super(npc, npcId, Region.HOSIDIUS, npcCoordinateMap.get(npcId));
+	}
+
+	@Override
+	public String getHint()
+	{
+		return npcOverlayMap.get(getNpcId());
 	}
 }

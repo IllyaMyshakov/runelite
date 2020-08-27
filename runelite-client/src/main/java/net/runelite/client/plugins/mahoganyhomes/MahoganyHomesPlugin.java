@@ -24,23 +24,31 @@
  */
 package net.runelite.client.plugins.mahoganyhomes;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.Skill;
+import net.runelite.api.NpcID;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.game.SkillIconManager;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.mahoganyhomes.contracts.ArdougneContract;
 import net.runelite.client.plugins.mahoganyhomes.contracts.Contract;
+import net.runelite.client.plugins.mahoganyhomes.contracts.FaladorContract;
+import net.runelite.client.plugins.mahoganyhomes.contracts.HosidiusContract;
+import net.runelite.client.plugins.mahoganyhomes.contracts.VarrockContract;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Mahogany Homes",
@@ -58,7 +66,8 @@ public class MahoganyHomesPlugin extends Plugin
 	@Inject
 	private MahoganyHomesWorldOverlay mahoganyHomesWorldOverlay;
 
-	private SkillIconManager skillIconManager;
+	@Inject
+	private WorldMapPointManager worldMapPointManager;
 
 	@Getter
 	private final List<TileObject> objectsToMark = new ArrayList<>();
@@ -69,6 +78,7 @@ public class MahoganyHomesPlugin extends Plugin
 
 	private Contract currentContract = null;
 	private BufferedImage mapArrow;
+	private BufferedImage constructionIcon;
 
 	@Override
 	protected void startUp() throws Exception
@@ -82,7 +92,32 @@ public class MahoganyHomesPlugin extends Plugin
 	{
 		overlayManager.remove(mahoganyHomesOverlay);
 		overlayManager.remove(mahoganyHomesWorldOverlay);
+		worldMapPointManager.removeIf(MahoganyHomesWorldMapPoint.class::isInstance);
 		currentContract = null;
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		String text = Text.removeTags(event.getMessage());
+
+		if (text.startsWith("Go see "))
+		{
+			currentContract = setContract(text);
+			worldMapPointManager.add(new MahoganyHomesWorldMapPoint(currentContract.getLocation(), this));
+		}
+		else if (text.contains(" seems happy with your work. Talk to him for your reward") ||
+			text.contains(" seems happy with your work. Talk to her for your reward"))
+		{
+			worldMapPointManager.removeIf(MahoganyHomesWorldMapPoint.class::isInstance);
+			currentContract = null;
+		}
+
 	}
 
 	public BufferedImage getMapArrow()
@@ -99,11 +134,58 @@ public class MahoganyHomesPlugin extends Plugin
 
 	public BufferedImage getConstructionImage()
 	{
-		return skillIconManager.getSkillImage(Skill.CONSTRUCTION);
+		if (constructionIcon != null)
+		{
+			return constructionIcon;
+		}
+
+		constructionIcon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/construction.png");
+
+		return constructionIcon;
+	}
+
+	private Contract setContract(String text)
+	{
+		if (text.isEmpty())
+		{
+			return null;
+		}
+
+		Contract ret = null;
+
+		for (String npc : Contract.NPC_NAMES)
+		{
+			if (text.contains(npc))
+			{
+				int npcId = Contract.NPC_IDS.get(npc);
+				// Check if Ardougne contracts have this NPC
+				if (ArdougneContract.npcCoordinateMap.containsKey(npcId))
+				{
+					ret = new ArdougneContract(npc, npcId);
+				}
+				// Check if Falador contracts have this NPC
+				if (FaladorContract.npcCoordinateMap.containsKey(npcId))
+				{
+					ret = new FaladorContract(npc, npcId);
+				}
+				// Check if Hosidius contracts have this NPC
+				if (HosidiusContract.npcCoordinateMap.containsKey(npcId))
+				{
+					ret = new HosidiusContract(npc, npcId);
+				}
+				// Check if Varrock contracts have this NPC
+				if (VarrockContract.npcCoordinateMap.containsKey(npcId))
+				{
+					ret = new VarrockContract(npc, npcId);
+				}
+				break;
+			}
+		}
+		return ret;
 	}
 
 	public Contract getContract()
 	{
-		return this.currentContract;
+		return currentContract;
 	}
 }

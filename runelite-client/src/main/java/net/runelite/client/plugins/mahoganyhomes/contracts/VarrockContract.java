@@ -69,6 +69,7 @@ public class VarrockContract extends Contract
 		// Chair
 		NullObjectID.NULL_39996
 	);
+	// Furniture mapping
 	private static final ImmutableList<Integer> SARAH_FURNITURE_IDS = ImmutableList.of(
 		// Table
 		NullObjectID.NULL_39997,
@@ -83,8 +84,8 @@ public class VarrockContract extends Contract
 		// Range
 		NullObjectID.NULL_40286
 	);
-
-	private static final HashMap<Integer, ImmutableList<Integer>> NPC_FURNITURE_LIST = new HashMap<Integer, ImmutableList<Integer>>()
+	// Furniture mapping for World Overlay
+	private static final HashMap<Integer, ImmutableList<Integer>> npcFurnitureMap = new HashMap<Integer, ImmutableList<Integer>>()
 	{
 		{
 			put(NpcID.BOB_10414, BOB_FURNITURE_IDS);
@@ -93,70 +94,34 @@ public class VarrockContract extends Contract
 		}
 	};
 
-	private static final HashMap<Integer, WorldPoint> NPC_LOCATION_LIST = new HashMap<Integer, WorldPoint>()
+	// Coordinate mapping for World Map Points
+	public static final HashMap<Integer, WorldPoint> npcCoordinateMap = new HashMap<Integer, WorldPoint>()
 	{
 		{
-			put(NpcID.BOB_10414, new WorldPoint(0, 0, 0));
-			put(NpcID.JEFF_10415, new WorldPoint(0, 0, 0));
-			put(NpcID.SARAH_10416, new WorldPoint(0, 0, 0));
+			put(NpcID.BOB_10414, new WorldPoint(3235, 3487, 0));
+			put(NpcID.JEFF_10415, new WorldPoint(3241, 3447, 0));
+			put(NpcID.SARAH_10416, new WorldPoint(3234, 3386, 0));
 		}
 	};
 
-	//	private static final ImmutableList<VarrockContract> FURNITURE = ImmutableList.of(
-//		// ---NPCs--- (obtained from https://oldschool.runescape.wiki/w/Mahogany_Homes)
-//		// Bob
-//		// Large Table
-//		new VarrockContract(NullObjectID.NULL_39981, new WorldPoint(3238, 3487, 0), "Bob"),
-//		// Grandfather Clock
-//		new VarrockContract(NullObjectID.NULL_39982, new WorldPoint(3235, 3483, 0), "Bob"),
-//		// Cabinet
-//		new VarrockContract(NullObjectID.NULL_39983, new WorldPoint(3235, 3486, 0), "Bob"),
-//		// Cabinet
-//		new VarrockContract(NullObjectID.NULL_39984, new WorldPoint(3235, 3487, 0), "Bob"),
-//		// Bookcase
-//		new VarrockContract(NullObjectID.NULL_39985, new WorldPoint(3235, 3484, 0), "Bob"),
-//		// Bookcase
-//		new VarrockContract(NullObjectID.NULL_39986, new WorldPoint(3235, 3489, 0), "Bob"),
-//		// Wardrobe
-//		new VarrockContract(NullObjectID.NULL_39987, new WorldPoint(3242, 3487, 1), "Bob"),
-//		// Drawers
-//		new VarrockContract(NullObjectID.NULL_39988, new WorldPoint(3242, 3486, 1), "Bob"),
-//
-//		// Jeff
-//		// Table
-//		new VarrockContract(NullObjectID.NULL_39989, new WorldPoint(3238, 3452, 0), "Jeff"),
-//		// Bookcase
-//		new VarrockContract(NullObjectID.NULL_39990, new WorldPoint(3242, 3454, 0), "Jeff"),
-//		// Shelves
-//		new VarrockContract(NullObjectID.NULL_39991, new WorldPoint(3241, 3447, 0), "Jeff"),
-//		// Bed
-//		new VarrockContract(NullObjectID.NULL_39992, new WorldPoint(3239, 3453, 1), "Jeff"),
-//		// Drawer
-//		new VarrockContract(NullObjectID.NULL_39993, new WorldPoint(3242, 3454, 1), "Jeff"),
-//		// Dresser
-//		new VarrockContract(NullObjectID.NULL_39994, new WorldPoint(3241, 3346, 1), "Jeff"),
-//		// Mirror
-//		new VarrockContract(NullObjectID.NULL_39995, new WorldPoint(3238, 3454, 1), "Jeff"),
-//		// Chair
-//		new VarrockContract(NullObjectID.NULL_39996, new WorldPoint(3242, 3447, 1), "Jeff"),
-//
-//		// Sarah
-//		// Table
-//		new VarrockContract(NullObjectID.NULL_39997, new WorldPoint(3237, 3385, 0), "Sarah"),
-//		// Bed
-//		new VarrockContract(NullObjectID.NULL_39998, new WorldPoint(3234, 3384, 0), "Sarah"),
-//		// Dresser
-//		new VarrockContract(NullObjectID.NULL_39999, new WorldPoint(3234, 3386, 0), "Sarah"),
-//		// Table
-//		new VarrockContract(NullObjectID.NULL_40000, new WorldPoint(3233, 3382, 0), "Sarah"),
-//		// Shelf
-//		new VarrockContract(NullObjectID.NULL_40001, new WorldPoint(3234, 3382, 0), "Sarah"),
-//		// Range
-//		new VarrockContract(NullObjectID.NULL_40286, new WorldPoint(3237, 3382, 0), "Sarah")
-//	);
-//
-	public VarrockContract(NpcID npc, WorldPoint location)
+	// Location map for Overlay
+	public static final HashMap<Integer, String> npcOverlayMap = new HashMap<Integer, String>()
 	{
-		super(npc, Region.VARROCK, location);
+		{
+			put(NpcID.BOB_10414, "North of estate agent");
+			put(NpcID.JEFF_10415, "South of estate agent");
+			put(NpcID.SARAH_10416, "Along south wall");
+		}
+	};
+
+	public VarrockContract(String npc, Integer npcId)
+	{
+		super(npc, npcId, Region.VARROCK, npcCoordinateMap.get(npcId));
+	}
+
+	@Override
+	public String getHint()
+	{
+		return npcOverlayMap.get(getNpcId());
 	}
 }

@@ -38,17 +38,19 @@ class MahoganyHomesWorldMapPoint extends WorldMapPoint
 	private final Point mahoganyHomesWorldImagePoint;
 
 	@Inject
-	private MahoganyHomesWorldMapPoint(final WorldPoint worldPoint, MahoganyHomesPlugin plugin)
+	public MahoganyHomesWorldMapPoint(final WorldPoint worldPoint, MahoganyHomesPlugin plugin)
 	{
 		super(worldPoint, null);
 
 		mahoganyHomesWorldImage = new BufferedImage(plugin.getMapArrow().getWidth(), plugin.getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics graphics = mahoganyHomesWorldImage.getGraphics();
+		// Draw 32x32 squircle
 		graphics.drawImage(plugin.getMapArrow(), 0, 0, null);
-		graphics.drawImage(plugin.getConstructionImage(), 0, 0, null);
+		// Draw 25x25 icon. Offset by 3 pixels
+		graphics.drawImage(plugin.getConstructionImage(), 3, 3, null);
 		mahoganyHomesWorldImagePoint = new Point(
-			mahoganyHomesWorldImage.getWidth() / 2,
-			mahoganyHomesWorldImage.getHeight());
+			mahoganyHomesWorldImage.getWidth()/2,
+			mahoganyHomesWorldImage.getHeight()/2);
 
 		this.plugin = plugin;
 		this.setSnapToEdge(true);

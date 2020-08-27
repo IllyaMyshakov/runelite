@@ -45,6 +45,8 @@ public class FaladorContract extends Contract
 		NullObjectID.NULL_40099,
 		// Range
 		NullObjectID.NULL_40297,
+		// Broken 40418
+		// Fixed 40419
 		// Hat Stand
 		NullObjectID.NULL_40298
 	);
@@ -80,8 +82,8 @@ public class FaladorContract extends Contract
 		// Hat Stand
 		NullObjectID.NULL_40295
 	);
-
-	private static final HashMap<Integer, ImmutableList<Integer>> NPC_FURNITURE_LIST = new HashMap<Integer, ImmutableList<Integer>>()
+	// Furniture mapping for World Overlay
+	private static final HashMap<Integer, ImmutableList<Integer>> npcFurnitureMap = new HashMap<Integer, ImmutableList<Integer>>()
 	{
 		{
 			put(NpcID.LARRY_10418, LARRY_FURNITURE_IDS);
@@ -90,69 +92,34 @@ public class FaladorContract extends Contract
 		}
 	};
 
-	private static final HashMap<Integer, WorldPoint> NPC_LOCATION_LIST = new HashMap<Integer, WorldPoint>()
+	// Coordinate mapping for World Map Points
+	public static final HashMap<Integer, WorldPoint> npcCoordinateMap = new HashMap<Integer, WorldPoint>()
 	{
 		{
-			put(NpcID.LARRY_10418, new WorldPoint(0, 0, 0));
-			put(NpcID.NORMAN, new WorldPoint(0, 0, 0));
-			put(NpcID.TAU, new WorldPoint(0, 0, 0));
+			put(NpcID.LARRY_10418, new WorldPoint(3040, 3367, 0));
+			put(NpcID.NORMAN, new WorldPoint(3036, 3343, 0));
+			put(NpcID.TAU, new WorldPoint(3044, 3345, 0));
 		}
 	};
 
-//	private static final ImmutableList<FaladorContract> FURNITURE = ImmutableList.of(
-//		// ---NPCs--- (obtained from https://oldschool.runescape.wiki/w/Mahogany_Homes)
-//		// Larry
-//		// Drawer
-//		new FaladorContract(NullObjectID.NULL_40095, new WorldPoint(3041, 3365, 0), "Larry"),
-//		// Drawer
-//		new FaladorContract(NullObjectID.NULL_40096, new WorldPoint(3041, 3364, 0), "Larry"),
-//		// Table
-//		new FaladorContract(NullObjectID.NULL_40097, new WorldPoint(3038, 3365, 0), "Larry"),
-//		// Table
-//		new FaladorContract(NullObjectID.NULL_40098, new WorldPoint(3039, 3363, 1), "Larry"),
-//		// Grandfather Clock
-//		new FaladorContract(NullObjectID.NULL_40099, new WorldPoint(3034, 3364, 1), "Larry"),
-//		// Range
-//		new FaladorContract(NullObjectID.NULL_40297, new WorldPoint(3040, 3367, 0), "Larry"),
-//		// Hat Stand
-//		new FaladorContract(NullObjectID.NULL_40298, new WorldPoint(3041, 3362, 0), "Larry"),
-//
-//		// Norman
-//		// Grandfather Clock
-//		new FaladorContract(NullObjectID.NULL_40089, new WorldPoint(3035, 3346, 0), "Norman"),
-//		// Table
-//		new FaladorContract(NullObjectID.NULL_40090, new WorldPoint(3036, 3343, 0), "Norman"),
-//		// Bed
-//		new FaladorContract(NullObjectID.NULL_40091, new WorldPoint(3040, 3347, 1), "Norman"),
-//		// Bookshelf
-//		new FaladorContract(NullObjectID.NULL_40092, new WorldPoint(3035, 3346, 1), "Norman"),
-//		// Drawers
-//		new FaladorContract(NullObjectID.NULL_40093, new WorldPoint(3035, 3347, 1), "Norman"),
-//		// Table
-//		new FaladorContract(NullObjectID.NULL_40094, new WorldPoint(3040, 3345, 1), "Norman"),
-//		// Range
-//		new FaladorContract(NullObjectID.NULL_40296, new WorldPoint(3040, 3346, 0), "Norman"),
-//
-//		// Tau
-//		// Sink
-//		new FaladorContract(NullObjectID.NULL_40083, new WorldPoint(3051, 3348, 0), "Tau"),
-//		// Table
-//		new FaladorContract(NullObjectID.NULL_40084, new WorldPoint(3048, 3345, 0), "Tau"),
-//		// Table
-//		new FaladorContract(NullObjectID.NULL_40085, new WorldPoint(3049, 3349, 0), "Tau"),
-//		// Cupboard
-//		new FaladorContract(NullObjectID.NULL_40086, new WorldPoint(3044, 3345, 0), "Tau"),
-//		// Shelves
-//		new FaladorContract(NullObjectID.NULL_40087, new WorldPoint(3047, 3341, 0), "Tau"),
-//		// Shelves
-//		new FaladorContract(NullObjectID.NULL_40088, new WorldPoint(3048, 3341, 0), "Tau"),
-//		// Hat Stand
-//		new FaladorContract(NullObjectID.NULL_40295, new WorldPoint(3046, 3341, 0), "Tau")
-//
-//	);
-
-	public FaladorContract(NpcID npc, WorldPoint location)
+	// Location map for Overlay
+	public static final HashMap<Integer, String> npcOverlayMap = new HashMap<Integer, String>()
 	{
-		super(npc, Region.FALADOR, location);
+		{
+			put(NpcID.LARRY_10418, "North of fountain");
+			put(NpcID.NORMAN, "South of fountain");
+			put(NpcID.TAU, "South-east of fountain");
+		}
+	};
+
+	public FaladorContract(String npc, Integer npcId)
+	{
+		super(npc, npcId, Region.FALADOR, npcCoordinateMap.get(npcId));
+	}
+
+	@Override
+	public String getHint()
+	{
+		return npcOverlayMap.get(getNpcId());
 	}
 }
