@@ -153,6 +153,7 @@ public class WidgetID
 	public static final int LMS_GROUP_ID = 333;
 	public static final int LMS_INGAME_GROUP_ID = 328;
 	public static final int ADVENTURE_LOG_ID = 187;
+	public static final int COLLECTION_LOG_ID = 621;
 	public static final int GENERIC_SCROLL_GROUP_ID = 625;
 	public static final int GAUNTLET_TIMER_GROUP_ID = 637;
 	public static final int HALLOWED_SEPULCHRE_TIMER_GROUP_ID = 668;
@@ -611,7 +612,6 @@ public class WidgetID
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
 		}
-
 		static class HLR
 		{
 			static final int TEAMMATE1 = 18;
@@ -619,7 +619,6 @@ public class WidgetID
 			static final int TEAMMATE3 = 26;
 			static final int TEAMMATE4 = 30;
 		}
-
 		static final int CORRECT_STYLE = 3;
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
@@ -842,7 +841,6 @@ public class WidgetID
 		static final int MEMBERS_CONTAINER = 7;
 		static final int MINIQUEST_CONTAINER = 8;
 	}
-
 	static class Music
 	{
 		static final int CONTAINER = 0;
@@ -919,6 +917,11 @@ public class WidgetID
 	}
 
 	static class AdventureLog
+	{
+		static final int CONTAINER = 0;
+	}
+
+	static class CollectionLog
 	{
 		static final int CONTAINER = 0;
 	}

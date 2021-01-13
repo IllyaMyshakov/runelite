@@ -165,9 +165,21 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
-
+	
 	@ConfigItem(
 		position = 12,
+		keyName = "pets",
+		name = "Pets Command",
+		description = "Configures whether the pet count command is enabled<br> !pets<br>" +
+			" Note: Update pet count by looking at All Pets tab in Collection Log"
+	)
+	default boolean pets()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
 		description = "Enable hot key to clear single word at a time"
@@ -178,7 +190,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "clearEntireChatBox",
 		name = "Clear Chat Box",
 		description = "Enable hotkey to clear entire chat box"
