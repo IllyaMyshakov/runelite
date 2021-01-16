@@ -307,8 +307,7 @@ public class ChatCommandsPlugin extends Plugin
 		if (petListStr != null && petListStr.length() > 2)
 		{
 			List<String> petIdStr = Arrays.asList(petListStr.split(","));
-			List<Integer> petList = petIdStr.stream().map(Integer::parseInt).collect(Collectors.toList());
-			return petList;
+			return petIdStr.stream().map(Integer::parseInt).collect(Collectors.toList());
 		}
 		// No pets
 		else
