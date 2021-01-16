@@ -1182,13 +1182,14 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean petListSubmit(ChatInput chatInput, String value)
 	{
 //		final Integer[] petList = getPetList();
-////		final String playerName = client.getLocalPlayer().getName();
+//		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
 		{
 			try
 			{
 //				chatClient.submitPetCount(playerName, petList);
+				getPetList();
 			}
 			catch (Exception ex)
 			{
