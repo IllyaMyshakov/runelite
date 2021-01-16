@@ -165,7 +165,7 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		position = 12,
 		keyName = "pets",
