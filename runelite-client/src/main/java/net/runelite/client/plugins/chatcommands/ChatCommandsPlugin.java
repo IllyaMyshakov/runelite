@@ -1087,6 +1087,94 @@ public class ChatCommandsPlugin extends Plugin
 
 		return true;
 	}
+	
+	/**
+	 * Looks up the pet count for the player who triggered !pets
+	 *
+	 * @param chatMessage The chat message containing the command.
+	 * @param message     The chat message
+	 */
+	private void petCountLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.pets())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		int playerPetCount;
+		try
+		{
+			playerPetCount = chatClient.getPetCount(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup total pet count", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Total pet count: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(playerPetCount))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	/**
+	 * Submits the pet count value for the local player
+	 *
+	 * @param chatInput The chat message containing the command.
+	 * @param value     The chat message
+	 */
+	private boolean petCountSubmit(ChatInput chatInput, String value)
+	{
+		final int petCount = getPc();
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitPetCount(playerName, petCount);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit pet count", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	/**
+	 * Checks if the Entry Header widget within the Collection Log is currently loaded
+	 */
+	private boolean isCollectionLogEntryHeaderLoaded()
+	{
+		return client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER) != null;
+	}
 
 	/**
 	 * Looks up the pet list for the player who triggered !pets
